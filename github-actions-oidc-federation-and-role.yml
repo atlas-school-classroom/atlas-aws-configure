@@ -3,7 +3,6 @@ AWSTemplateFormatVersion: "2010-09-09"
 Description: Github Actions configuration - OIDC IAM IdP and associated role CI/CD
 
 Resources:
-
   IdpGitHubOidc:
     Type: AWS::IAM::OIDCProvider
     Properties:
@@ -17,7 +16,7 @@ Resources:
         - Key: Name
           Value: AtlasGitHubClassroomRole-OIDC-Provider
 
-  RoleGithubActions:
+  RoleGithubClassroom:
     Type: AWS::IAM::Role
     Properties:
       RoleName: AtlasGitHubClassroomRole
@@ -33,8 +32,21 @@ Resources:
       ManagedPolicyArns:
         - !Sub arn:${AWS::Partition}:iam::aws:policy/AWSCloudTrail_ReadOnlyAccess
 
-Outputs:
+  RoleInstructor:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: AtlasInstructorRole
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Principal:
+              AWS: 008971637879
+            Action:
+              - sts:AssumeRole
+      ManagedPolicyArns:
+        - !Sub arn:${AWS::Partition}:iam::aws:policy/AdministratorAccess
 
+Outputs:
   IdpGitHubOidc:
     Description: "ARN of Github OIDC Provider"
     Value: !GetAtt IdpGitHubOidc.Arn
@@ -42,3 +54,7 @@ Outputs:
   RoleGithubActionsARN:
     Description: "CICD Role for GitHub Actions"
     Value: !GetAtt RoleGithubActions.Arn
+
+  RoleInstructorArn:
+    Description: "ARN for the IAM Role used by Instructors"
+    Value: !GetAtt RoleInstructor.Arn
