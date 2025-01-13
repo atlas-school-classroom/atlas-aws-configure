@@ -10,7 +10,7 @@ Resources:
       Url: https://token.actions.githubusercontent.com
       ClientIdList:
         - sts.amazonaws.com
-        - !Sub https://github.com/atlas-school-classroom/*
+        - https://github.com/atlas-school-classroom/*
       ThumbprintList:
         - 6938fd4d98bab03faadb97b34396831e3780aea1
       Tags:
@@ -31,10 +31,9 @@ Resources:
                 - !Sub arn:${AWS::Partition}:iam::${AWS::AccountId}:oidc-provider/token.actions.githubusercontent.com
             Condition:
               StringLike:
-                token.actions.githubusercontent.com:sub: !Sub repo:atlas-school-classroom/*:ref:refs/heads/main
+                token.actions.githubusercontent.com:sub: repo:atlas-school-classroom/*:ref:refs/heads/main
       ManagedPolicyArns:
-        ## edit the managed policy to give least privileges
-        - !Sub arn:${AWS::Partition}:iam::aws:policy/AdministratorAccess
+        - !Sub arn:${AWS::Partition}:iam::aws:policy/AWSCloudTrail_ReadOnlyAccess
 
 Outputs:
 
