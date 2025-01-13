@@ -26,9 +26,7 @@ Resources:
           - Effect: Allow
             Action: sts:AssumeRoleWithWebIdentity
             Principal:
-              Federated: !If
-                - !Ref IdpGitHubOidc
-                - !Sub arn:${AWS::Partition}:iam::${AWS::AccountId}:oidc-provider/token.actions.githubusercontent.com
+              Federated: !Ref IdpGitHubOidc
             Condition:
               StringLike:
                 token.actions.githubusercontent.com:sub: repo:atlas-school-classroom/*:ref:refs/heads/main
